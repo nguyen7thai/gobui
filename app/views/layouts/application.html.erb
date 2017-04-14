@@ -14,6 +14,8 @@
   </head>
 
   <body>
+    <%= audio_tag asset_path('beep.wav'), id: 'audio-beep' %>
+    <%= audio_tag asset_path('buzz.mp3'), id: 'audio-buzz' %>
     <%= yield %>
   </body>
 </html>

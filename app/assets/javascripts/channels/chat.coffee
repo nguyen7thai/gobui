@@ -66,6 +66,8 @@ window.App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel"
         $user.attr('id', "user-#{id}")
         $user.text(user)
         $('.list-users').append($user)
+    else if data.buzz 
+      $('#audio-buzz')[0].play()
     else
       console.log data
       if data.from != window.userId
@@ -100,6 +102,11 @@ $ ->
     noVideo = $('#no-video').is(':checked')
     getMedia(!noVideo).then () ->
       start(true)
+
+  $('#btn-buzz').on 'click', (e) ->
+    console.log 'buzz'
+    e.preventDefault()
+    window.App.chatChannel.send {buzz: 'buzz'}
 
   # $('#no-video').on 'click', (e) ->
   #   e.preventDefault()

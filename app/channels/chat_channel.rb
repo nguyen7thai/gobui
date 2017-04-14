@@ -7,7 +7,7 @@ class ChatChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    data.merge!(from_username: ListUsers.all[current_user])
+    data.merge!(from: current_user, from_username: ListUsers.all[current_user])
     ActionCable.server.broadcast('bebe_chat_channel', data)
   end
 
