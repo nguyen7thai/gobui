@@ -1,8 +1,3 @@
-# app/assets/javascripts/cable/subscriptions/chat.coffee
-# getMedia = (hasVideo) ->
-#   , (error)->
-#     alert(error)
-
 getMedia = (hasVideo = true) ->
   new Promise((resolve, reject) ->
     if !window.peerConnection
@@ -68,23 +63,28 @@ window.App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel"
         $('.list-users').append($user)
     else if data.buzz 
       $('#audio-buzz')[0].play()
-    else
-      console.log data
+    else if data.ice
+      if data.from != window.userId && window.peerConnection
+        console.log 'add ice candate'
+        peerConnection.addIceCandidate(new RTCIceCandidate(data.ice))
+    else if data.description
       if data.from != window.userId
         getMedia(data.hasVideo).then () ->
           if !window.peerConnection
             start(false)
-          if data.description
-            alert('Receive call')
-            remoteDescriptionCallback = () ->
-              if data.description.type == 'offer'
-                peerConnection.createAnswer(gotDescription, () -> alert('error'))
+          alert('Received call')
+          remoteDescriptionCallback = () ->
+            if data.description.type == 'offer'
+              peerConnection.createAnswer(gotDescription, () -> alert('error'))
 
-            peerConnection.setRemoteDescription(new RTCSessionDescription(data.description), remoteDescriptionCallback)
-            console.log 'set remote description'
-          if data.ice 
-            console.log 'add ice candate'
-            peerConnection.addIceCandidate(new RTCIceCandidate(data.ice))
+          peerConnection.setRemoteDescription(new RTCSessionDescription(data.description), remoteDescriptionCallback)
+          console.log 'set remote description'
+    else if data.calling && data.from != window.userId
+      if confirm('Incomming Call. Receive?')
+        getMedia(!data.no_video).then () ->
+          start(true)
+      else
+        console.log 'Rejected call'
 
 $ ->
   $('form#chat-box').on 'submit', (e) ->
@@ -100,17 +100,10 @@ $ ->
   $('#call-btn').on 'click', (e) ->
     e.preventDefault()
     noVideo = $('#no-video').is(':checked')
-    getMedia(!noVideo).then () ->
-      start(true)
+    window.App.chatChannel.send {calling: 'calling', no_video: noVideo}
 
   $('#btn-buzz').on 'click', (e) ->
     console.log 'buzz'
     e.preventDefault()
     window.App.chatChannel.send {buzz: 'buzz'}
-
-  # $('#no-video').on 'click', (e) ->
-  #   e.preventDefault()
-  #   window.localStream.getVideoTracks()[0].stop()
-  #   $('#videos').addClass('hidden')
-  # getMedia true
 
