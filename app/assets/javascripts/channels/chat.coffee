@@ -62,7 +62,7 @@ window.App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel"
         $user.text(user)
         $('.list-users').append($user)
     else if data.buzz 
-      $('#audio-buzz')[0].play()
+      $(data.audio)[0].play()
     else if data.ice
       if data.from != window.userId && window.peerConnection
         console.log 'add ice candate'
@@ -102,8 +102,10 @@ $ ->
     noVideo = $('#no-video').is(':checked')
     window.App.chatChannel.send {calling: 'calling', no_video: noVideo}
 
-  $('#btn-buzz').on 'click', (e) ->
-    console.log 'buzz'
+  $('.btn-voice').on 'click', (e) ->
+    console.log 'voice'
     e.preventDefault()
-    window.App.chatChannel.send {buzz: 'buzz'}
+    window.App.chatChannel.send {buzz: 'buzz', audio: $(this).data('audio')}
+
+  $('#btn-buzz')
 
