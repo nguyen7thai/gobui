@@ -1,5 +1,7 @@
 class BebesController < ApplicationController
   def index
-    cookies.signed[:user_id] = Time.now.to_i.to_s
+    unless current_user
+      cookies.signed[:user_id] = Time.now.to_i.to_s
+    end
   end
 end

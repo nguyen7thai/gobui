@@ -54,10 +54,11 @@ window.App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel"
       $('#chat-messages').append $mess
     else if data.out_user
       alert('OUT: ' + data.username)
-      $("#user-#{data.out_user}").remove()
+      if data.from != window.userId
+        $("#user-#{data.out_user}").remove()
     else if data.users_list
       if data.from != window.userId
-        alert(data.username)
+        alert('JOINED: ' + data.username)
       list = JSON.parse(data.users_list)
       $('.list-users').html('')
       $.each list, (id, user) ->

@@ -22,8 +22,11 @@ html, body {
   display: flex;
   height: 100%;
 }
-.list-users {
+.online-list {
+  padding: 0 15px;
   width: 20%;
+}
+.list-users {
 }
 .communicate-container {
   width: 80%;
@@ -31,6 +34,8 @@ html, body {
   flex-flow: column;
   height: 100%;
   justify-content: space-between;
+  border-right: 1px solid #ddd;
+  padding: 10px;
 }
 .hidden {
   display: none !important;
@@ -43,7 +48,7 @@ form#chat-box {
   width: 100%;
   bottom: 0;
   height: 100px;
-  input {
+  input[type='text'] {
     width: 100%;
   }
 }
@@ -58,4 +63,8 @@ form#chat-box {
 
 #chat-messages {
   height: calc(100% - 100px - 300px);
+  overflow-y: scroll;
+}
+#no-video {
+  margin-left: 10px;
 }
