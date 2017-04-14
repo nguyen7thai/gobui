@@ -11,6 +11,17 @@ getMedia = (hasVideo = true) ->
       resolve()
 )
 
+endCall = () ->
+  peerConnection.close()
+  localStream.getTracks().forEach (track) ->
+    track.stop()
+  localVideo.src = ''
+  remoteVideo.src = ''
+  $('#call-btn').removeClass('hidden')
+  $('#no-video').removeClass('hidden')
+  $('#btn-end-call').addClass('hidden')
+
+
 gotDescription = (description) ->
   console.log 'gotdescription'
   hasVideo = !$('#no-video').is(':checked')
@@ -28,6 +39,7 @@ gotRemoteStream = (event) ->
 start = (isCaller) ->
   $('#call-btn').addClass('hidden')
   $('#no-video').addClass('hidden')
+  $('#btn-end-call').removeClass('hidden')
   console.log 'start'
   window.peerConnection = new webkitRTCPeerConnection(
     { "iceServers": [{ "url": "stun:stun.l.google.com:19302" }] }
@@ -79,6 +91,9 @@ window.App.chatChannel = App.cable.subscriptions.create { channel: "ChatChannel"
 
           peerConnection.setRemoteDescription(new RTCSessionDescription(data.description), remoteDescriptionCallback)
           console.log 'set remote description'
+    else if data.end_call && data.from != window.userId
+      endCall()
+      alert('Call End')
     else if data.calling && data.from != window.userId
       if confirm('Incomming Call. Receive?')
         getMedia(!data.no_video).then () ->
@@ -106,6 +121,8 @@ $ ->
     console.log 'voice'
     e.preventDefault()
     window.App.chatChannel.send {buzz: 'buzz', audio: $(this).data('audio')}
-
-  $('#btn-buzz')
-
+  
+  $('#btn-end-call').on 'click', (e) ->
+    e.preventDefault()
+    endCall()
+    window.App.chatChannel.send { end_call: 'end_call' }
