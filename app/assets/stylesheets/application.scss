@@ -15,12 +15,32 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
-.display-none {
+html, body {
+  height: 100%;
+}
+.bebe-container {
+  display: flex;
+  height: 100%;
+}
+.list-users {
+  width: 20%;
+}
+.communicate-container {
+  width: 80%;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  justify-content: space-between;
+}
+.hidden {
   display: none !important;
+  visibility: hidden;
+}
+.visibility-hidden {
+  visibility: hidden;
 }
 form#chat-box {
   width: 100%;
-  position: absolute;
   bottom: 0;
   height: 100px;
   input {
@@ -34,4 +54,8 @@ form#chat-box {
     width: 50%;
     height: 300px;
   }
+}
+
+#chat-messages {
+  height: calc(100% - 100px - 300px);
 }

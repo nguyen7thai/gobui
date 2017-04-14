@@ -2,6 +2,9 @@
 <html>
   <head>
     <title>BebeChat</title>
+    <script>
+      window.userId = "<%= current_user %>"
+    </script>
     <%= csrf_meta_tags %>
 
     <%= action_cable_meta_tag %>
