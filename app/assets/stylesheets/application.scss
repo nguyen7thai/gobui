@@ -15,7 +15,7 @@
  */
 @import 'base';
 
-html, body {
+html, body, #main {
   height: 100%;
 }
 .bebe-container {
@@ -37,12 +37,14 @@ html, body {
   border-right: 1px solid #ddd;
   padding: 10px;
 }
-form#chat-box {
+form#chat-box-form {
   width: 100%;
   bottom: 0;
   height: 100px;
   input[type='text'] {
     width: 100%;
+    font-size: 15px;
+    padding: 10px;
   }
 }
 
@@ -54,8 +56,11 @@ form#chat-box {
   }
 }
 
-#chat-messages {
+#chat-box {
   height: calc(100% - 100px - 300px);
+}
+#chat-messages {
+  height: calc(100% - 100px);
   overflow-y: scroll;
 }
 #no-video {
