@@ -7,6 +7,7 @@ let initChatChannel = () => {
     {
       received: (data) => {
         if (!((data.to == 'others') && (data.from == window.userId))) {
+          console.log(`Publish: ${data.type}`)
           Dispatcher.publish(data.type, data)
         }
       }

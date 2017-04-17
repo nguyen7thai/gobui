@@ -1,8 +1,18 @@
 import Dispatcher from '../dispatcher'
 
 class CallService {
-  setLocalStream(value) {
-    this.localStream = value
+  askForCall(hasVideo=true) {
+    window.App.chatChannel.send({type: 'ask_for_call', has_video: hasVideo, to: 'others'})
+  }
+  endCall() {
+    this.peerConnection.close()
+    this.peerConnection = null
+    this.localStream.getTracks().forEach((track)  => {
+      track.stop()
+    })
+  }
+  sendEndSignal() {
+    window.App.chatChannel.send({type: 'end_call'})
   }
   start(isCaller=true) {
     this.peerConnection = new webkitRTCPeerConnection(
@@ -16,7 +26,7 @@ class CallService {
     }
   }
   gotDescription(description) {
-    let hasVideo = true
+    let hasVideo = this.hasVideo
     this.peerConnection.setLocalDescription(description, () => {
       window.App.chatChannel.send({type: 'exchange_description', to: 'others', description: description, hasVideo: hasVideo})
     })
@@ -48,9 +58,11 @@ class CallService {
     })
   }
   getMediaAndStart(hasVideo=true) {
+    this.hasVideo = hasVideo
     this.getMedia(hasVideo).then(() => this.start(true))
   }
   getMediaAndAnswer(data, hasVideo=true) {
+    this.hasVideo = hasVideo
     this.getMedia(hasVideo).then(() => {
       if (!this.peerConnection) {
         this.start(false)

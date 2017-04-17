@@ -7,26 +7,49 @@ export default class CallBox extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      local_stream: null,
-      remote_stream: null
+      local_stream: '',
+      remote_stream: '',
+      audio_only: false,
+      calling: false
     }
     Dispatcher.subscribe('gotLocalStream', (stream) => {
-      this.setState({local_stream: URL.createObjectURL(stream)})
+      this.setState({calling: true, local_stream: URL.createObjectURL(stream)})
     })
     Dispatcher.subscribe('gotRemoteStream', (stream) => {
       this.setState({remote_stream: URL.createObjectURL(stream)})
     })
     Dispatcher.subscribe('exchange_description', (data) => {
-      CallService.getMediaAndAnswer(data)
+      console.log(`Receive Call width video : ${data.hasVideo}`)
+      CallService.getMediaAndAnswer(data, data.hasVideo)
     })
     Dispatcher.subscribe('exchange_ice', (data) => {
       if (CallService.peerConnection) {
         CallService.peerConnection.addIceCandidate(new RTCIceCandidate(data.ice))
       }
     })
+    Dispatcher.subscribe('ask_for_call', (data) => {
+      if (confirm('Incomming Call. Receive?')) {
+        CallService.getMediaAndStart(data.has_video)
+      } else {
+        console.log('Rejected call')
+      }
+    })
+    Dispatcher.subscribe('end_call', () => {
+      CallService.endCall()
+      this.setState({local_stream: '', remote_stream: '', calling: false})
+    })
   }
-  call() {
-    CallService.getMediaAndStart()
+  call(e) {
+    e.preventDefault()
+    CallService.askForCall(!this.state.audio_only)
+  }
+  endCall(e) {
+    e.preventDefault()
+    CallService.sendEndSignal()
+    
+  }
+  changeAudioOnly(e) {
+    this.setState({ audio_only: $(e.target).is(':checked')})
   }
   render() {
     return  <div id='call-box'> Call Box Here
@@ -35,7 +58,14 @@ export default class CallBox extends React.Component {
         <video src={this.state.remote_stream} id='remote-video' autoPlay controls />
       </div>
       <div id='video-actions'>
-        <a id='btn-call' href='#' onClick={this.call}>Call</a>
+        <div className={`${this.state.calling ? 'hidden' : ''}`}>
+          <a id='btn-call' href='#' onClick={(e) => this.call(e)}>Call</a>
+          <input type='checkbox' onChange={(e) => this.changeAudioOnly(e)} value={this.state.audio_only} id='no-video' />
+          No Video
+        </div>
+        <div className={`${!this.state.calling ? 'hidden' : ''}`}>
+          <a id='btn-end-cal' href='#' onClick={(e) => this.endCall(e)}>End Call</a>
+        </div>
       </div>
     </div>
   }

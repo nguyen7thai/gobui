@@ -1,3 +1,10 @@
 * {
  box-sizing: border-box;
 }
+.hidden {
+  display: none !important;
+  visibility: hidden;
+}
+.visibility-hidden {
+  visibility: hidden;
+}
