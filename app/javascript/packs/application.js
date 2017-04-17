@@ -8,4 +8,9 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker')
-import bebe from 'chat'
+import ChatComponent from '../views/chat_component'
+import initChatChannel from '../services/chat_channel'
+
+$(document).ready(() => {
+  window.App.chatChannel = initChatChannel()
+})

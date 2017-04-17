@@ -1,22 +1,24 @@
-.bebe-container
-  .communicate-container
-    #videos
-      video#local-video autoplay=true controls=true muted=true
-      video#remote-video autoplay=true controls=true
-    #chat-messages
-    form#chat-box
-      input(type='text' placeholder='Enter to send')
-      div
-        a#btn-end-call.hidden(href='#') End Call
-        a#call-btn(href='#')
-          | Call
-        input#no-video(type='checkbox') No Video?
-      div
-        a#btn-buzz.btn-voice(href='#' data-audio='#audio-buzz') Buzz
-      div
-        a#btn-bebe-voice.btn-voice(href='#' data-audio='#audio-bebe-voice') Go Bùi
-      div
-        a#btn-thapbui-voice.btn-voice(href='#' data-audio='#audio-thapbui-voice') Go Tháp Bùi
-  .online-list
-    h4 Online Users
-    .list-users
+javascript:
+  window.renderChatComponent()
+/.bebe-container
+/  .communicate-container
+/    #videos
+/      video#local-video autoplay=true controls=true muted=true
+/      video#remote-video autoplay=true controls=true
+/    #chat-messages
+/    form#chat-box
+/      input(type='text' placeholder='Enter to send')
+/      div
+/        a#btn-end-call.hidden(href='#') End Call
+/        a#call-btn(href='#')
+/          | Call
+/        input#no-video(type='checkbox') No Video?
+/      div
+/        a#btn-buzz.btn-voice(href='#' data-audio='#audio-buzz') Buzz
+/      div
+/        a#btn-bebe-voice.btn-voice(href='#' data-audio='#audio-bebe-voice') Go Bùi
+/      div
+/        a#btn-thapbui-voice.btn-voice(href='#' data-audio='#audio-thapbui-voice') Go Tháp Bùi
+/  .online-list
+/    h4 Online Users
+/    .list-users
