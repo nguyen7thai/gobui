@@ -29,8 +29,8 @@ export default class CallBox extends React.Component {
     CallService.getMediaAndStart()
   }
   render() {
-    return  <div> Call Box Here
-      <div id='#videos'>
+    return  <div id='call-box'> Call Box Here
+      <div id='videos'>
         <video src={this.state.local_stream} id='local-video' autoPlay muted controls />
         <video src={this.state.remote_stream} id='remote-video' autoPlay controls />
       </div>
