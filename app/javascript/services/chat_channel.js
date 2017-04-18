@@ -1,8 +1,9 @@
 import Dispatcher from 'dispatcher'
+let urlParams = new URLSearchParams(window.location.search)
 let initChatChannel = () => {
   return App.cable.subscriptions.create(
     { 
-      channel: "ChatChannel", userid: window.userId
+      channel: "ChatChannel", userid: window.userId, username: urlParams.get('username')
     },
     {
       received: (data) => {

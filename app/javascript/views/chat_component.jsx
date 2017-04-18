@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import CallBox from '../components/call_box'
 import ChatBox from '../components/chat_box'
 import SoundBox from '../components/sound_box'
+import OnlineList from '../components/online_list'
 
 class ChatComponent extends React.Component {
   render() {
@@ -12,6 +13,7 @@ class ChatComponent extends React.Component {
         <ChatBox />
         <SoundBox />
       </div>
+      <OnlineList />
     </div>
   }
 }
