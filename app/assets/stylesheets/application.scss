@@ -14,7 +14,9 @@
  *= require_self
  */
 @import 'base';
-
+body {
+  margin: 0;
+}
 html, body, #main {
   height: 100%;
 }
@@ -40,7 +42,6 @@ html, body, #main {
 form#chat-box-form {
   width: 100%;
   bottom: 0;
-  height: 100px;
   input[type='text'] {
     width: 100%;
     font-size: 15px;
@@ -65,4 +66,9 @@ form#chat-box-form {
 }
 #no-video {
   margin-left: 10px;
+}
+#sound-box {
+  a {
+    display: block;
+  }
 }
