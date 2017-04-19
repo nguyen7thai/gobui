@@ -15,7 +15,7 @@ class CallService {
     window.App.chatChannel.send({type: 'end_call'})
   }
   start(isCaller=true) {
-    this.peerConnection = new webkitRTCPeerConnection(
+    this.peerConnection = new RTCPeerConnection(
       { "iceServers": [{ "url": "stun:stun.l.google.com:19302" }] }
     )
     this.peerConnection.onicecandidate = this.gotIceCandidate
@@ -42,7 +42,7 @@ class CallService {
   getMedia(hasVideo=true) {
     return new Promise((resolve, reject) => {
       if (!this.peerConnection) {
-        navigator.webkitGetUserMedia(
+        navigator.getUserMedia(
           { 
             audio: true, video: hasVideo 
           }, (stream) => {

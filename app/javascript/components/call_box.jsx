@@ -9,7 +9,6 @@ export default class CallBox extends React.Component {
     this.state = {
       local_stream: '',
       remote_stream: '',
-      audio_only: false,
       calling: false
     }
     Dispatcher.subscribe('gotLocalStream', (stream) => {
@@ -39,17 +38,14 @@ export default class CallBox extends React.Component {
       this.setState({local_stream: '', remote_stream: '', calling: false})
     })
   }
-  call(e) {
+  call(e, hasVideo=true) {
     e.preventDefault()
-    CallService.askForCall(!this.state.audio_only)
+    CallService.askForCall(hasVideo)
   }
   endCall(e) {
     e.preventDefault()
     CallService.sendEndSignal()
     
-  }
-  changeAudioOnly(e) {
-    this.setState({ audio_only: $(e.target).is(':checked')})
   }
   render() {
     return  <div id='call-box'> Call Box Here
@@ -59,9 +55,8 @@ export default class CallBox extends React.Component {
       </div>
       <div id='video-actions'>
         <div className={`${this.state.calling ? 'hidden' : ''}`}>
-          <a id='btn-call' href='#' onClick={(e) => this.call(e)}>Call</a>
-          <input type='checkbox' onChange={(e) => this.changeAudioOnly(e)} value={this.state.audio_only} id='no-video' />
-          No Video
+          <a id='btn-call' href='#' onClick={(e) => this.call(e)}>Video Call</a>
+          <a id='btn-audio-call' href='#' onClick={(e) => this.call(e, false)}>Audio Call</a>
         </div>
         <div className={`${!this.state.calling ? 'hidden' : ''}`}>
           <a id='btn-end-cal' href='#' onClick={(e) => this.endCall(e)}>End Call</a>
