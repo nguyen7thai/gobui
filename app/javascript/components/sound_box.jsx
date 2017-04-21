@@ -6,12 +6,13 @@ export default class SoundBox extends React.Component {
   constructor() {
     super()
     Dispatcher.subscribe('play_sound', (data) => {
-      let audio = new Audio(`/assets/${data.file_name}`)
+      let audio = new Audio(`/${data.file_name}`)
       audio.play()
     })
   }
   triggerSound(fileName) {
-    return () => {
+    return (e) => {
+      e.preventDefault()
       window.App.chatChannel.send({type: 'play_sound', file_name: fileName})
     }
   }
