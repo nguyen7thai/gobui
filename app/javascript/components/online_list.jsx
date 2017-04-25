@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import Dispatcher from '../dispatcher'
+import { endCall } from '../actions/callBoxActions'
+import { store } from '../store'
+import callService from '../services/call_service' 
 
 export default class OnlineList extends React.Component {
   constructor() {
@@ -16,6 +19,8 @@ export default class OnlineList extends React.Component {
     })
     Dispatcher.subscribe('out_user', (data) => {
       alert(`OUT: ${data.username}`)
+      callService.endCall()
+      callBoxStore.dispatch(endCall())
       this.setState({users: JSON.parse(data.users_list)})
     })
   }

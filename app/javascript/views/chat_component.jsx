@@ -1,16 +1,22 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import CallBox from '../components/call_box'
-import ChatBox from '../components/chat_box'
+import CallBox from '../containers/CallBox'
+import store from '../store'
+import ChatBox from '../containers/ChatBox'
 import SoundBox from '../components/sound_box'
 import OnlineList from '../components/online_list'
+import { Provider } from 'react-redux'
 
 class ChatComponent extends React.Component {
   render() {
     return <div className='bebe-container'>
       <div className='communicate-container'>
-        <CallBox />
-        <ChatBox />
+        <Provider store={store}>
+          <div>
+            <CallBox />
+            <ChatBox />
+          </div>
+        </Provider>
         <SoundBox />
       </div>
       <OnlineList />

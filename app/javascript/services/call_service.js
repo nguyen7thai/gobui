@@ -5,11 +5,13 @@ class CallService {
     window.App.chatChannel.send({type: 'ask_for_call', has_video: hasVideo, to: 'others'})
   }
   endCall() {
-    this.peerConnection.close()
-    this.peerConnection = null
-    this.localStream.getTracks().forEach((track)  => {
-      track.stop()
-    })
+    if (this.peerConnection) {
+      this.peerConnection.close()
+      this.peerConnection = null
+      this.localStream.getTracks().forEach((track)  => {
+        track.stop()
+      })
+    }
   }
   sendEndSignal() {
     window.App.chatChannel.send({type: 'end_call'})
@@ -32,6 +34,7 @@ class CallService {
     })
   }
   gotIceCandidate(event) {
+    console.log(`goticecandidate ${event.candidate}`)
     if (event.candidate) {
       window.App.chatChannel.send({type: 'exchange_ice', to: 'others', ice: event.candidate})
     }
@@ -74,6 +77,12 @@ class CallService {
       }
       this.peerConnection.setRemoteDescription(new RTCSessionDescription(data.description), remoteDescriptionCallback)
     })
+  }
+  addIceCandidate(ice) {
+    console.log(`before error ${ice}`)
+    if (this.peerConnection) {
+      this.peerConnection.addIceCandidate(new RTCIceCandidate(ice))
+    }
   }
 }
 
