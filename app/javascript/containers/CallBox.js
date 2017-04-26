@@ -1,4 +1,4 @@
-import CallService from '../services/call_service'
+import CallService from '../services/callService'
 import Dispatcher from '../dispatcher'
 import { setLocalStream, setRemoteStream, endCall } from '../actions/callBoxActions'
 import CallBoxComponent from '../components/CallBoxComponent'

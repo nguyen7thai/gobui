@@ -8,8 +8,8 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker')
-import ChatComponent from '../views/chat_component'
-import initChatChannel from '../services/chat_channel'
+import ChatComponent from '../views/CommunicateComponent'
+import initChatChannel from '../services/chatChannel'
 
 $(document).ready(() => {
   window.App.chatChannel = initChatChannel()

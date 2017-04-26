@@ -29,8 +29,9 @@ class CallService {
   }
   gotDescription(description) {
     let hasVideo = this.hasVideo
+    window.App.chatChannel.send({type: 'exchange_description', to: 'others', description: description, hasVideo: hasVideo})
     this.peerConnection.setLocalDescription(description, () => {
-      window.App.chatChannel.send({type: 'exchange_description', to: 'others', description: description, hasVideo: hasVideo})
+      console.log('set local description')
     })
   }
   gotIceCandidate(event) {
@@ -63,6 +64,7 @@ class CallService {
   getMediaAndStart(hasVideo=true) {
     this.hasVideo = hasVideo
     this.getMedia(hasVideo).then(() => this.start(true))
+    this.is_starting = true
   }
   getMediaAndAnswer(data, hasVideo=true) {
     this.hasVideo = hasVideo
@@ -72,6 +74,8 @@ class CallService {
         alert('Received call')
       }
       let remoteDescriptionCallback = () => {
+        console.log('set remote description')
+        this.receivedRemoteDescription = true
         if (data.description.type == 'offer')
           this.peerConnection.createAnswer(this.gotDescription.bind(this), () => alert('error'))
       }
@@ -79,8 +83,8 @@ class CallService {
     })
   }
   addIceCandidate(ice) {
-    console.log(`before error ${ice}`)
     if (this.peerConnection) {
+      console.log('add ice candidate')
       this.peerConnection.addIceCandidate(new RTCIceCandidate(ice))
     }
   }
