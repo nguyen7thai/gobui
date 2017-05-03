@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   #
   root 'bebes#index'
   resources :bebes
+  get '/support' => 'statics#support'
   namespace :api do
     resources :users, only: [:create] do
       resources :activities, only: [:index] do
