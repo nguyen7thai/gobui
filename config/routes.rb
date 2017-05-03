@@ -3,4 +3,20 @@ Rails.application.routes.draw do
   #
   root 'bebes#index'
   resources :bebes
+  namespace :api do
+    resources :users, only: [:create] do
+      resources :activities, only: [:index] do
+        member do
+          post :go
+        end
+      end
+    end
+    resources :sessions, only: [:create]
+    resources :activities, only: [] do
+      member do
+        post :accept
+        post :deny
+      end
+    end
+  end
 end

@@ -17,5 +17,11 @@ module BebeChat
       logger.formatter = config.log_formatter
       config.logger = ActiveSupport::TaggedLogging.new(logger)
     end
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
   end
 end
