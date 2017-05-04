@@ -47,5 +47,19 @@ module Api
       })
       render_ok
     end
+
+    # POST /api/activities/:id/miss
+    def miss
+      activity = Activity.find params[:id]
+      from = params[:from]
+      to = params[:to]
+      to_user = User.find_by(username: to)
+      NotificationCenter.notify(to_user.device_token, {
+        accept: false,
+        from: from,
+        message: "Missed the Go. No Answer" 
+      })
+      render_ok
+    end
   end
 end

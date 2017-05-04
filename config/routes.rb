@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       member do
         post :accept
         post :deny
+        post :miss
       end
     end
   end
